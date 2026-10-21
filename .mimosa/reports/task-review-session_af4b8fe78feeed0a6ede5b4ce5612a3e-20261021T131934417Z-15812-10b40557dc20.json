@@ -1,0 +1,550 @@
+{
+  "schema_version": "mimosa-task-review/v2",
+  "run_id": "20261021T131934417Z-15812-10b40557dc20",
+  "run_status": "inconclusive",
+  "errors": [
+    {
+      "stage": "candidate-select",
+      "target": "tmp_dump/main.go",
+      "reason": "changed_file_unreadable: observed changed file no longer exists or cannot be read"
+    }
+  ],
+  "coverage": {
+    "schema_version": "mimosa-hook-coverage/v1",
+    "status": "partial",
+    "scope": "hook_observed_diff",
+    "baseline": {
+      "complete": true,
+      "captured_files": 122,
+      "candidate_limit": 5000,
+      "truncated": false,
+      "enumeration_error_count": 0,
+      "snapshot_error_count": 0,
+      "compensated_target_count": 16
+    },
+    "change_tracking": {
+      "touched_observed": 16,
+      "touched_retained": 16,
+      "truncated": false,
+      "bash_mutation": true,
+      "bash_discovered": 16,
+      "bash_discovery_limit": 80,
+      "bash_discovery_truncated": false
+    },
+    "candidates": {
+      "eligible_files": 16,
+      "selected_files": 16,
+      "limit": 20,
+      "truncated": false
+    },
+    "scanning": {
+      "required_files": 16,
+      "scanned_files": 16,
+      "skipped_files": 0,
+      "failed_files": 0,
+      "project_checks_required": 0,
+      "project_checks_completed": 0
+    },
+    "notification": {
+      "eligible_findings": 0,
+      "detailed_findings": 0,
+      "detail_limit": 3,
+      "truncated": false
+    },
+    "reason_counts": {
+      "changed_file_unreadable": 1,
+      "project_check_failed": 1
+    },
+    "reasons": [
+      {
+        "code": "changed_file_unreadable",
+        "stage": "candidate-select",
+        "target": "tmp_dump/main.go",
+        "detail": "observed changed file no longer exists or cannot be read",
+        "affects_completion": true
+      },
+      {
+        "code": "project_check_failed",
+        "stage": "candidate-select",
+        "target": "tmp_dump/main.go",
+        "detail": "changed_file_unreadable: observed changed file no longer exists or cannot be read",
+        "affects_completion": true
+      }
+    ],
+    "reasons_truncated": false
+  },
+  "generated_at": "2026-10-21T13:19:34.417Z",
+  "session_id": "session_af4b8fe78feeed0a6ede5b4ce5612a3e",
+  "target": ".",
+  "revision": "765d8a040e8955b23eb7b22f778bc9c72df0c58c",
+  "rules_version": "unavailable",
+  "diff_hash": "b84cb493a909f4041fe3fdba773ecda46fa80936bc1649ae12634c49b9b4af38",
+  "diff": {
+    "algorithm": "sha256",
+    "changed_file_count": 16,
+    "changed_files": [
+      {
+        "file": "cmd/server/main.go",
+        "ranges": [
+          {
+            "start": 23,
+            "end": 23
+          },
+          {
+            "start": 102,
+            "end": 102
+          },
+          {
+            "start": 104,
+            "end": 105
+          },
+          {
+            "start": 108,
+            "end": 115
+          },
+          {
+            "start": 123,
+            "end": 123
+          },
+          {
+            "start": 187,
+            "end": 187
+          },
+          {
+            "start": 198,
+            "end": 204
+          },
+          {
+            "start": 227,
+            "end": 227
+          },
+          {
+            "start": 241,
+            "end": 241
+          },
+          {
+            "start": 392,
+            "end": 392
+          }
+        ],
+        "before_hash": "1b2d8e81eedcfacbb69fa18b86e2d5dbc28b0fb59c22d434374bbc11da9e2aa4",
+        "after_hash": "94fa16a3457a997654e85369b1891da887526a1b60d213bb3d0373aa8f30a4da"
+      },
+      {
+        "file": "internal/auth/tokenstore.go",
+        "ranges": [
+          {
+            "start": 63,
+            "end": 70
+          }
+        ],
+        "before_hash": "c68ae1ee4b096bd24bc647276f6c8a78f6bda9d456fc41edc30a16966bad8aab",
+        "after_hash": "33800a7d5bed81716fab798c20cba7da316d01cef529eb7a6adf7e726ffb68e2"
+      },
+      {
+        "file": "internal/db/db.go",
+        "ranges": [
+          {
+            "start": 54,
+            "end": 54
+          },
+          {
+            "start": 87,
+            "end": 104
+          }
+        ],
+        "before_hash": "0f520323daa62a3fe9a322f7553e2de474aee1f2d69bab727ba635a86850a30c",
+        "after_hash": "fe2bdaddfd76ab5df45535a36a5c4bc83e64f0bbb303d4d8614c5693bfcb13d7"
+      },
+      {
+        "file": "internal/gitutil/gitutil.go",
+        "ranges": [
+          {
+            "start": 42,
+            "end": 49
+          },
+          {
+            "start": 61,
+            "end": 63
+          },
+          {
+            "start": 68,
+            "end": 68
+          },
+          {
+            "start": 71,
+            "end": 77
+          },
+          {
+            "start": 87,
+            "end": 87
+          },
+          {
+            "start": 92,
+            "end": 153
+          }
+        ],
+        "before_hash": "b8566e08469365a55c4455e359650cdbbae4f0542b02555d2126a84b802f347e",
+        "after_hash": "8370e6a1f1c5257f2e7782ec83a68478621fd49f531983e4bcfdc3d25b3fb20c"
+      },
+      {
+        "file": "internal/gitutil/merge.go",
+        "ranges": [
+          {
+            "start": 8,
+            "end": 8
+          },
+          {
+            "start": 11,
+            "end": 24
+          },
+          {
+            "start": 41,
+            "end": 44
+          },
+          {
+            "start": 46,
+            "end": 47
+          },
+          {
+            "start": 49,
+            "end": 52
+          },
+          {
+            "start": 55,
+            "end": 56
+          },
+          {
+            "start": 60,
+            "end": 60
+          },
+          {
+            "start": 63,
+            "end": 64
+          },
+          {
+            "start": 66,
+            "end": 68
+          },
+          {
+            "start": 71,
+            "end": 76
+          },
+          {
+            "start": 79,
+            "end": 81
+          },
+          {
+            "start": 85,
+            "end": 87
+          },
+          {
+            "start": 91,
+            "end": 91
+          },
+          {
+            "start": 93,
+            "end": 93
+          },
+          {
+            "start": 95,
+            "end": 95
+          }
+        ],
+        "before_hash": "085c09bffdafba21ad20cd8bd04802bcef61d6999e4c653788ecbe5fef0dbf0c",
+        "after_hash": "367c4d326355b66c13109654ceb6eb7027011be8840c149b5414e3af8e996afc"
+      },
+      {
+        "file": "internal/handlers/actions.go",
+        "ranges": [
+          {
+            "start": 79,
+            "end": 83
+          }
+        ],
+        "before_hash": "016713e7ede29bd1154c9ec7918304db0799c40a278786bbdc9069c53d42d24e",
+        "after_hash": "05f01107ff16f6dc24b6cb29aeb43bc21ca0edbb9b271d4c0dbc7ff75b9b8750"
+      },
+      {
+        "file": "internal/handlers/api.go",
+        "ranges": [
+          {
+            "start": 7,
+            "end": 7
+          },
+          {
+            "start": 394,
+            "end": 398
+          }
+        ],
+        "before_hash": "bbb4cf968c7c49e685c107c9fa88335127d148c114742f3b93d4a1d7bf873760",
+        "after_hash": "f6646d40dfef29ce12cfff29a0fb5c895053e6d455a0a9c31666af5310946ca9"
+      },
+      {
+        "file": "internal/handlers/gitinternal.go",
+        "ranges": [
+          {
+            "start": 4,
+            "end": 4
+          },
+          {
+            "start": 14,
+            "end": 14
+          },
+          {
+            "start": 22,
+            "end": 25
+          },
+          {
+            "start": 28,
+            "end": 127
+          }
+        ],
+        "before_hash": "697b4e62faa2eea26ccf56d3af873603b94761741b4bdd1ba3da3379629cfa47",
+        "after_hash": "1e716e6f00e538db819b845d8a4dcf1c15df223d134bc3e315b85a3b30a6f590"
+      },
+      {
+        "file": "internal/handlers/org.go",
+        "ranges": [
+          {
+            "start": 371,
+            "end": 373
+          },
+          {
+            "start": 408,
+            "end": 415
+          },
+          {
+            "start": 417,
+            "end": 438
+          },
+          {
+            "start": 446,
+            "end": 449
+          },
+          {
+            "start": 460,
+            "end": 460
+          },
+          {
+            "start": 469,
+            "end": 472
+          },
+          {
+            "start": 474,
+            "end": 474
+          },
+          {
+            "start": 496,
+            "end": 499
+          },
+          {
+            "start": 507,
+            "end": 508
+          },
+          {
+            "start": 513,
+            "end": 513
+          },
+          {
+            "start": 522,
+            "end": 524
+          },
+          {
+            "start": 547,
+            "end": 565
+          }
+        ],
+        "before_hash": "ab08175e7b00f65402a6b96ed8cfd401fc8d73f9038745a597e0441402d08690",
+        "after_hash": "8351c767d5bd5eef5bb59224f29f0bdf7b5f7e70f96d7a53e302cb628255d68b"
+      },
+      {
+        "file": "internal/handlers/pr.go",
+        "ranges": [
+          {
+            "start": 18,
+            "end": 18
+          },
+          {
+            "start": 156,
+            "end": 156
+          },
+          {
+            "start": 212,
+            "end": 212
+          },
+          {
+            "start": 232,
+            "end": 232
+          },
+          {
+            "start": 294,
+            "end": 296
+          }
+        ],
+        "before_hash": "9d798687d529683a4643394180d588bef8481d81c7c80a28f752ee92fff537fa",
+        "after_hash": "3d44f84f2e1f240b7996ae63e56c4b21d07e1dd44be9376746ba647dc60ea691"
+      },
+      {
+        "file": "internal/issues/service.go",
+        "ranges": [
+          {
+            "start": 99,
+            "end": 99
+          },
+          {
+            "start": 106,
+            "end": 106
+          },
+          {
+            "start": 112,
+            "end": 112
+          },
+          {
+            "start": 200,
+            "end": 200
+          }
+        ],
+        "before_hash": "a3153a7f44a514541864bad58807453758cb8fe3e212134df79e84552c9bee1c",
+        "after_hash": "faee2534ce48ca8ddec6998e66f1a6a13d482f7c3dc43ebe195fc4e0391441c1"
+      },
+      {
+        "file": "internal/middleware/auth.go",
+        "ranges": [
+          {
+            "start": 21,
+            "end": 38
+          },
+          {
+            "start": 42,
+            "end": 50
+          },
+          {
+            "start": 54,
+            "end": 58
+          },
+          {
+            "start": 62,
+            "end": 67
+          },
+          {
+            "start": 69,
+            "end": 69
+          },
+          {
+            "start": 74,
+            "end": 95
+          }
+        ],
+        "before_hash": "e2eb1601777eaab51f126a5c2229b553b0916483232f5d435e24bfabaabba986",
+        "after_hash": "4b8b034b3db4ccbdbd457e75dfb531a65a4ea475b5b6af33ec92c8190fa6c898"
+      },
+      {
+        "file": "internal/models/release.go",
+        "ranges": [
+          {
+            "start": 8,
+            "end": 9
+          }
+        ],
+        "before_hash": "e1ea5342683039540df3e8a25c5ded2f9a78435a21a98292e037121e58131e37",
+        "after_hash": "8db7c66c548c8ddd0c87a0efa85d4d60be199682e66cad6bf9e8a2592fdceb71"
+      },
+      {
+        "file": "internal/org/service.go",
+        "ranges": [
+          {
+            "start": 144,
+            "end": 144
+          }
+        ],
+        "before_hash": "69463a3de7332babf58729a2aaf9dd62052a17bd2a3675205383d93703974047",
+        "after_hash": "55d1ec8cd63e63eb31ad5ae8c35110a41c8d20b03a3204c1c06a5a6df21bea66"
+      },
+      {
+        "file": "internal/repo/service.go",
+        "ranges": [
+          {
+            "start": 15,
+            "end": 15
+          },
+          {
+            "start": 348,
+            "end": 355
+          },
+          {
+            "start": 385,
+            "end": 388
+          },
+          {
+            "start": 450,
+            "end": 450
+          }
+        ],
+        "before_hash": "c257e40d252e09bde0dfd015e13eb22807fad91fefe27e6339b2772f800f94a9",
+        "after_hash": "069a97bac8f444642d42e5fe2268bab78bfefcc707d8176f4cb62b718348a260"
+      },
+      {
+        "file": "web/vite.config.ts",
+        "ranges": [
+          {
+            "start": 35,
+            "end": 37
+          }
+        ],
+        "before_hash": "2f35ed65f14b260d9399ad17139606b4a0ce675e161bbbadbf1d67b08c8f406a",
+        "after_hash": "0205fac513721a2fd26d973a84e10b65a8f97e024a13bb50eb1bfee9e5de5f6f"
+      }
+    ]
+  },
+  "timing": {
+    "started_at": "2026-10-21T13:19:32.990Z",
+    "completed_at": "2026-10-21T13:19:34.417Z",
+    "duration_ms": 1427,
+    "measurement": "hook_wall_clock"
+  },
+  "tokens": {
+    "input": 0,
+    "output": 0,
+    "total": 0,
+    "model_calls": 0,
+    "measurement": "known-zero"
+  },
+  "telemetry": {
+    "schemaVersion": "mimosa-gate-telemetry/v1",
+    "profile": "gate",
+    "operation": "Stop",
+    "outcome": "partial/INCONCLUSIVE",
+    "latencyMs": 1427,
+    "peakMemoryBytes": 143781888,
+    "memoryMeasurement": "max-observed-process-rss",
+    "scannedFiles": 16,
+    "cache": {
+      "hits": 0,
+      "misses": 0,
+      "measurement": "not-applicable"
+    },
+    "denyCount": 0,
+    "tokens": {
+      "input": 0,
+      "output": 0,
+      "total": 0,
+      "modelCalls": 0,
+      "measurement": "known-zero"
+    }
+  },
+  "finding_count": 0,
+  "rewake_finding_count": 0,
+  "evidence_boundary": {
+    "scan": "candidate",
+    "static_fix_verification": "observed_static_only",
+    "runtime_verification": "not_performed"
+  },
+  "finding_events": [],
+  "findings": [],
+  "artifacts": {
+    "immutable_report": ".mimosa/reports/task-review-session_af4b8fe78feeed0a6ede5b4ce5612a3e-20261021T131934417Z-15812-10b40557dc20.json",
+    "latest_report": ".mimosa/reports/task-review-session_af4b8fe78feeed0a6ede5b4ce5612a3e.json",
+    "history_summary": ".mimosa/history/run-20261021T131934417Z-15812-10b40557dc20.json"
+  }
+}

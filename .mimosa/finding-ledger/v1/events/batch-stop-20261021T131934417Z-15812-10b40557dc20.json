@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "mimosa-finding-ledger-batch/v1",
+  "batchId": "stop-20261021T131934417Z-15812-10b40557dc20",
+  "runId": "20261021T131934417Z-15812-10b40557dc20",
+  "runStatus": "inconclusive",
+  "coverage": {
+    "status": "partial",
+    "reasons": [
+      {
+        "code": "changed_file_unreadable",
+        "stage": "candidate-select",
+        "target": "tmp_dump/main.go",
+        "detail": "observed changed file no longer exists or cannot be read",
+        "affectsCompletion": true
+      },
+      {
+        "code": "project_check_failed",
+        "stage": "candidate-select",
+        "target": "tmp_dump/main.go",
+        "detail": "changed_file_unreadable: observed changed file no longer exists or cannot be read",
+        "affectsCompletion": true
+      }
+    ]
+  },
+  "source": {
+    "component": "zcode-hook",
+    "operationId": "Stop"
+  },
+  "revision": "765d8a040e8955b23eb7b22f778bc9c72df0c58c",
+  "diffHash": "b84cb493a909f4041fe3fdba773ecda46fa80936bc1649ae12634c49b9b4af38",
+  "rulesVersion": "unavailable",
+  "sessionHash": "695efebf485bbba8af77efd074e0dbf2833ac5ae83d61615eaa4c4bae7df793e",
+  "reportRef": ".mimosa/reports/task-review-session_af4b8fe78feeed0a6ede5b4ce5612a3e-20261021T131934417Z-15812-10b40557dc20.json",
+  "events": [],
+  "observedFindingIds": [],
+  "verifiedFiles": [
+    {
+      "file": "internal/repo/service.go",
+      "direct": "complete",
+      "projectContext": "partial"
+    },
+    {
+      "file": "internal/handlers/pr.go",
+      "direct": "complete",
+      "projectContext": "partial"
+    },
+    {
+      "file": "internal/issues/service.go",
+      "direct": "complete",
+      "projectContext": "partial"
+    },
+    {
+      "file": "internal/org/service.go",
+      "direct": "complete",
+      "projectContext": "partial"
+    },
+    {
+      "file": "internal/gitutil/gitutil.go",
+      "direct": "complete",
+      "projectContext": "partial"
+    },
+    {
+      "file": "internal/gitutil/merge.go",
+      "direct": "complete",
+      "projectContext": "partial"
+    },
+    {
+      "file": "internal/models/release.go",
+      "direct": "complete",
+      "projectContext": "partial"
+    },
+    {
+      "file": "internal/db/db.go",
+      "direct": "complete",
+      "projectContext": "partial"
+    },
+    {
+      "file": "internal/handlers/org.go",
+      "direct": "complete",
+      "projectContext": "partial"
+    },
+    {
+      "file": "cmd/server/main.go",
+      "direct": "complete",
+      "projectContext": "partial"
+    },
+    {
+      "file": "internal/middleware/auth.go",
+      "direct": "complete",
+      "projectContext": "partial"
+    },
+    {
+      "file": "internal/handlers/gitinternal.go",
+      "direct": "complete",
+      "projectContext": "partial"
+    },
+    {
+      "file": "internal/handlers/api.go",
+      "direct": "complete",
+      "projectContext": "partial"
+    },
+    {
+      "file": "internal/handlers/actions.go",
+      "direct": "complete",
+      "projectContext": "partial"
+    },
+    {
+      "file": "internal/auth/tokenstore.go",
+      "direct": "complete",
+      "projectContext": "partial"
+    },
+    {
+      "file": "web/vite.config.ts",
+      "direct": "complete",
+      "projectContext": "partial"
+    }
+  ],
+  "recordedAt": "2026-10-21T13:19:34.746Z"
+}

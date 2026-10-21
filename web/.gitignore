@@ -1,0 +1,13 @@
+/dist
+/node_modules
+/.vscode
+.DS_Store
+*.log
+*.local
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+auto-imports.d.ts
+components.d.ts

@@ -1,0 +1,62 @@
+package models
+
+import "time"
+
+// Repository represents a Git repository.
+type Repository struct {
+	ID            uint        `json:"id" gorm:"primaryKey"`
+	OwnerID       uint        `json:"owner_id" gorm:"not null;index;uniqueIndex:idx_owner_type_name"`
+	OwnerType     string      `json:"owner_type" gorm:"not null;default:'user';uniqueIndex:idx_owner_type_name"` // "user" | "org"
+	Owner         User        `json:"owner" gorm:"constraint:OnDelete:CASCADE;"`
+	Name          string      `json:"name" gorm:"not null;uniqueIndex:idx_owner_type_name"`
+	Description   string      `json:"description"`
+	IsPrivate     bool        `json:"is_private"`
+	DefaultBranch string      `json:"default_branch" gorm:"default:main"`
+	QuotaBytes    int64       `json:"quota_bytes" gorm:"default:0"` // 0 = unlimited
+	ForkedFromID  *uint       `json:"forked_from_id" gorm:"index"`
+	ForkedFrom    *Repository `json:"forked_from" gorm:"foreignKey:ForkedFromID;constraint:OnDelete:SET NULL;"`
+	CreatedAt     time.Time   `json:"created_at"`
+	UpdatedAt     time.Time   `json:"updated_at"`
+	HookToken     string      `json:"-" gorm:"size:64"` // per-repo secret for pre-receive hook auth
+}
+
+// TableName overrides GORM default pluralization.
+func (Repository) TableName() string {
+	return "repositories"
+}
+
+// RepoDTO is a serialize-safe repository representation.
+type RepoDTO struct {
+	ID            uint   `json:"id"`
+	OwnerID       uint   `json:"owner_id"`
+	OwnerType     string `json:"owner_type"`
+	OwnerUsername string `json:"owner_username"`
+	Name          string `json:"name"`
+	Description   string `json:"description"`
+	IsPrivate     bool   `json:"is_private"`
+	DefaultBranch string `json:"default_branch"`
+	QuotaBytes    int64  `json:"quota_bytes"`
+	ForkedFromID  *uint  `json:"forked_from_id"`
+	CreatedAt     string `json:"created_at"`
+	UpdatedAt     string `json:"updated_at"`
+}
+
+// DTO returns a typed struct (no map allocations).
+func (r *Repository) DTO() RepoDTO {
+	return RepoDTO{
+		ID:            r.ID,
+		OwnerID:       r.OwnerID,
+		OwnerType:     r.OwnerType,
+		OwnerUsername: r.Owner.Username,
+		Name:          r.Name,
+		Description:   r.Description,
+		IsPrivate:     r.IsPrivate,
+		DefaultBranch: r.DefaultBranch,
+		QuotaBytes:    r.QuotaBytes,
+		ForkedFromID:  r.ForkedFromID,
+		CreatedAt:     r.CreatedAt.Format("2006-01-02T15:04:05Z07:00"),
+		UpdatedAt:     r.UpdatedAt.Format("2006-01-02T15:04:05Z07:00"),
+	}
+}
+
+

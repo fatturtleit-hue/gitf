@@ -1,0 +1,23 @@
+[Unit]
+Description=gitf - Lightweight Git Service
+After=network.target
+
+[Service]
+Type=simple
+User=gitf
+Group=gitf
+WorkingDirectory=/opt/gitf
+EnvironmentFile=/opt/gitf/.env
+ExecStart=/opt/gitf/gitf
+Restart=on-failure
+RestartSec=5
+
+# Security hardening
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/opt/gitf/data /opt/gitf
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target
