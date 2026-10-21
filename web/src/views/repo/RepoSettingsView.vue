@@ -2,7 +2,8 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { repoApi } from '@/api/repo'
-import type { Repository, Collaborator } from '@/api/types'
+import { protectionApi } from '@/api/protection'
+import type { Repository, Collaborator, BranchProtection, CreateProtectionRequest } from '@/api/types'
 import ErrorState from '@/components/ErrorState.vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
@@ -26,6 +27,54 @@ const editId = ref<number | null>(null)
 const editPerm = ref('read')
 const editQuota = ref(0)
 
+// ── 分支保护 ──
+const protections = ref<BranchProtection[]>([])
+const protectionsVisible = ref(true)
+const showAddProt = ref(false)
+const addingProt = ref(false)
+const newProt = ref<CreateProtectionRequest>({
+  pattern: '',
+  require_approvals: 0,
+  allow_force_push: false,
+  allow_delete: false
+})
+
+async function loadProtections() {
+  try {
+    const p = await protectionApi.list(owner.value, repoName.value)
+    protections.value = p.items
+    protectionsVisible.value = true
+  } catch {
+    // Non-admin callers cannot list protections — hide the section quietly.
+    protectionsVisible.value = false
+  }
+}
+
+async function addProtection() {
+  if (!newProt.value.pattern) return
+  addingProt.value = true
+  try {
+    await protectionApi.create(owner.value, repoName.value, newProt.value)
+    ElMessage.success('保护规则已添加')
+    showAddProt.value = false
+    newProt.value = { pattern: '', require_approvals: 0, allow_force_push: false, allow_delete: false }
+    await loadProtections()
+  } catch (err: any) {
+    ElMessage.error(err.message || '添加失败')
+  } finally {
+    addingProt.value = false
+  }
+}
+
+async function removeProtection(p: BranchProtection) {
+  try {
+    await ElMessageBox.confirm(`确定要删除对 “${p.pattern}” 的保护规则吗？`, '删除保护规则', { type: 'warning' })
+    await protectionApi.del(owner.value, repoName.value, p.id)
+    ElMessage.success('已删除')
+    await loadProtections()
+  } catch { /* cancelled */ }
+}
+
 async function loadAll() {
   loading.value = true
   error.value = ''
@@ -38,6 +87,7 @@ async function loadAll() {
     description.value = r.description || ''
     isPrivate.value = r.is_private
     collaborators.value = c.items
+    await loadProtections()
   } catch (err: any) {
     error.value = err.message || '加载失败'
   } finally {
@@ -139,6 +189,38 @@ onMounted(loadAll)
       </el-form>
     </div>
 
+    <div v-if="protectionsVisible" class="card section">
+      <div class="spread">
+        <h3>分支保护</h3>
+        <el-button type="primary" size="small" @click="showAddProt = true">
+          <el-icon><Plus /></el-icon> 添加规则
+        </el-button>
+      </div>
+      <p class="muted" style="font-size: 12px; margin: 8px 0 0">
+        被保护的分支禁止删除和强制推送（除非规则允许）；“需要批准”会让对应的 Pull Request 必须先拿到足够数量的批准评审才能合并。
+        规则需服务器配置 HOOK_SECRET 后才会在 push 时强制执行。
+      </p>
+
+      <div v-if="protections.length === 0" class="muted" style="margin-top: 16px; text-align: center">暂无保护规则</div>
+
+      <div v-else class="file-list" style="margin-top: 12px">
+        <div v-for="p in protections" :key="p.id" class="file-row" style="flex-wrap: wrap; gap: 8px">
+          <el-icon :size="18"><Lock /></el-icon>
+          <div class="flex-1">
+            <div><code>{{ p.pattern }}</code></div>
+            <div class="muted" style="font-size: 12px">
+              <span v-if="p.require_approvals > 0">合并需 {{ p.require_approvals }} 个批准 · </span>
+              <span v-if="p.allow_force_push">允许强推 · </span>
+              <span v-else>禁止强推 · </span>
+              <span v-if="p.allow_delete">允许删除</span>
+              <span v-else>禁止删除</span>
+            </div>
+          </div>
+          <el-button type="danger" size="small" text @click="removeProtection(p)">删除</el-button>
+        </div>
+      </div>
+    </div>
+
     <div class="card section">
       <div class="spread">
         <h3>协作者</h3>
@@ -196,6 +278,27 @@ onMounted(loadAll)
           <div style="display:flex; justify-content: flex-end; gap: 8px; width: 100%">
             <el-button @click="showAddCollab = false">取消</el-button>
             <el-button type="primary" native-type="submit" :loading="addingCollab">添加</el-button>
+          </div>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+
+    <el-dialog v-model="showAddProt" title="添加分支保护规则" width="460px">
+      <el-form label-position="top" @submit.prevent="addProtection">
+        <el-form-item label="分支名或匹配模式" required>
+          <el-input v-model="newProt.pattern" placeholder="例如 main 或 *" />
+        </el-form-item>
+        <el-form-item label="合并所需批准数（0 = 不要求）">
+          <el-input-number v-model="newProt.require_approvals" :min="0" :max="10" style="width: 100%" />
+        </el-form-item>
+        <el-form-item>
+          <el-checkbox v-model="newProt.allow_force_push">允许强制推送</el-checkbox>
+          <el-checkbox v-model="newProt.allow_delete">允许删除分支</el-checkbox>
+        </el-form-item>
+        <el-form-item>
+          <div style="display:flex; justify-content: flex-end; gap: 8px; width: 100%">
+            <el-button @click="showAddProt = false">取消</el-button>
+            <el-button type="primary" native-type="submit" :loading="addingProt">添加规则</el-button>
           </div>
         </el-form-item>
       </el-form>
