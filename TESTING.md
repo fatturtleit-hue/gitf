@@ -118,3 +118,36 @@ frontend smoke pass.**
 - Dead code removed (`middleware.BodyLimiter` was never wired).
 - `go mod tidy` and frontend dependency audit: no unused dependencies.
 - SPA assets were already content-hashed with `immutable` caching; unchanged.
+
+### Open-source release hardening (2026-10-21, same day)
+
+Before the first public push, a static security pass surfaced additional
+issues, all fixed:
+
+- **Archive flag injection (critical).** `/repos/.../archive/{ref}` passed the
+  client-controlled `ref` straight to `git archive` argv; a value like
+  `--output=…` is a server-side file-write primitive. The archive endpoint
+  was rewritten in-process with go-git (tree walk → tar.gz/zip), so no
+  request-derived string reaches a subprocess anymore; refs are additionally
+  validated with a per-character allowlist.
+- **Tree/blob path hardening.** `path` query parameters are validated by
+  per-segment allowlist (no `..`, no leading `-`/`/`) in the handler before
+  reaching git operations.
+- **Ref validation everywhere.** `Diff`, `DiffStat`, `Merge`, PR create and
+  the commit/compare endpoints validate refs/branch names against a
+  per-character allowlist (no leading `-`, no `..`).
+- **Git subprocesses use fully literal argv.** The three smart-HTTP commands
+  select the repository via `cmd.Dir`, never as an argument, so no
+  request-derived value can enter command construction.
+- **Test fixtures** no longer contain password-shaped literals; the shared
+  test credential is read from `GITF_TEST_PASSWORD` with a deterministic
+  synthetic fallback.
+
+Two **accepted MEDIUM** findings remain from the final static pass
+("suspected cross-file taint" at the TreeEntries/Archive call sites): the
+analyzer cannot prove sanitization across files, but both values pass a
+per-character allowlist rebuild before use, and the archive path no longer
+reaches any subprocess. Reviewed and accepted with this note as the record.
+
+Deployment secrets (`deploy.env`, server IPs) were removed before publishing;
+the public history starts fresh at the initial release commit.
