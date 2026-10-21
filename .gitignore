@@ -35,3 +35,6 @@ coverage/
 /internal/repo/*/
 !internal/repo/*.go
 
+
+# Mimosa local security scanner state
+/.mimosa/
