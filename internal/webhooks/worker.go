@@ -164,8 +164,11 @@ func DispatchWebhook(db *gorm.DB, dispatcher *Dispatcher, ownerType string, owne
 	if ownerType == "repo" {
 		var repo models.Repository
 		if err := db.First(&repo, ownerID).Error; err == nil && repo.OwnerType == "org" {
-			db.Where("owner_type = ? AND owner_id = ? AND active = ?", "org", repo.OwnerID, true).Find(&webhooks)
-			for _, w := range webhooks {
+			// Fresh slice — reusing `webhooks` would make Find append and
+			// re-dispatch every repo-level webhook a second time.
+			var orgWebhooks []models.Webhook
+			db.Where("owner_type = ? AND owner_id = ? AND active = ?", "org", repo.OwnerID, true).Find(&orgWebhooks)
+			for _, w := range orgWebhooks {
 				dispatcher.Enqueue(w, event, payloadJSON)
 			}
 		}

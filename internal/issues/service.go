@@ -61,13 +61,15 @@ func (s *Service) GetByNumber(repoID uint, number int) (*models.Issue, error) {
 }
 
 func (s *Service) List(repoID uint, status, label, milestone, assignee, search string, limit, offset int) ([]models.Issue, int, error) {
-	query := s.DB.Preload("Author").Preload("Assignee").Where("repo_id = ?", repoID)
+	// Column names are qualified because label/milestone/assignee filters add
+	// JOINs whose tables carry colliding columns (repo_id, status).
+	query := s.DB.Preload("Author").Preload("Assignee").Where("issues.repo_id = ?", repoID)
 	if status != "" {
-		query = query.Where("status = ?", status)
+		query = query.Where("issues.status = ?", status)
 	}
 	if search != "" {
 		like := "%" + search + "%"
-		query = query.Where("title LIKE ? OR body LIKE ?", like, like)
+		query = query.Where("issues.title LIKE ? OR issues.body LIKE ?", like, like)
 	}
 	if label != "" {
 		query = query.Joins("JOIN issue_labels il ON il.issue_id = issues.id").

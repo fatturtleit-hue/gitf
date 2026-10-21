@@ -78,6 +78,10 @@ func InitBare(cfg *config.Config, owner, name, defaultBranch string) error {
 // headers or before post-receive existed.
 func InstallHooks(cfg *config.Config, repoPath, owner, name string) error {
 	internalURL := internalURL(cfg)
+	hooksDir := filepath.Join(repoPath, "hooks")
+	if err := os.MkdirAll(hooksDir, 0o755); err != nil {
+		return fmt.Errorf("create hooks dir: %w", err)
+	}
 	if cfg.HookSecret != "" {
 		script := fmt.Sprintf(`#!/bin/sh
 set -e
@@ -95,7 +99,7 @@ result=$(echo "$body" | curl -sSf -X POST \
 }
 exit 0
 `, cfg.HookSecret, owner, name, internalURL)
-		if err := os.WriteFile(filepath.Join(repoPath, "hooks", "pre-receive"), []byte(script), 0o755); err != nil {
+		if err := os.WriteFile(filepath.Join(hooksDir, "pre-receive"), []byte(script), 0o755); err != nil {
 			return fmt.Errorf("install pre-receive hook: %w", err)
 		}
 	}
@@ -113,7 +117,7 @@ echo "$body" | curl -sS -X POST \
   %s/internal/post-receive >/dev/null 2>&1 || true
 exit 0
 `, hookTokenLine(cfg.HookSecret), owner, name, internalURL)
-	if err := os.WriteFile(filepath.Join(repoPath, "hooks", "post-receive"), []byte(postScript), 0o755); err != nil {
+	if err := os.WriteFile(filepath.Join(hooksDir, "post-receive"), []byte(postScript), 0o755); err != nil {
 		return fmt.Errorf("install post-receive hook: %w", err)
 	}
 	return nil

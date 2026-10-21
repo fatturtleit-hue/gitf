@@ -106,8 +106,11 @@ frontend smoke pass.**
 - Repos created before hooks carried owner headers were repaired automatically
   at startup by the hook sweep; installs without `HOOK_SECRET` do not get
   pre-receive branch protection enforcement.
-- `internal/issues`, `internal/org`, `internal/webhooks` and `internal/models`
-  have no Go unit tests yet.
+- Unit-test coverage after the 2026-10-21 pass (per package): auth 84%,
+  webhooks 92%, issues 85%, org 76%, gitutil 74%, db 74%, config 79%,
+  models 50%, middleware 44%, repo 43%, handlers 28%, **overall 37.7%**.
+  Weakest spots remaining: `internal/handlers` (the largest package) and
+  `internal/org` handler-layer flows beyond the authorization matrix.
 
 ### Optimizations applied (2026-10-21)
 

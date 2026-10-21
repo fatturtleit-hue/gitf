@@ -73,11 +73,12 @@ func Merge(baseRepoPath, headRepoPath, headBranch, baseBranch, strategy string) 
 		}
 	case "rebase":
 		// Check out the head tip, then replay its own commits on top of base.
+		// The rebase run needs an identity too — it re-creates commits.
 		if _, err := runIn(worktreePath, "checkout", "-B", "gitf-pr-head", "FETCH_HEAD"); err != nil {
 			return "", fmt.Errorf("checkout head: %s", err)
 		}
-		if _, err := runIn(worktreePath, "rebase", baseBranch); err != nil {
-			return "", fmt.Errorf("rebase: %s", err)
+		if out, err = runIn(worktreePath, append(mergeIdentity, "rebase", baseBranch)...); err != nil {
+			return "", fmt.Errorf("rebase: %w: %s", err, out)
 		}
 	default: // "merge"
 		if out, err = runIn(worktreePath, append(mergeIdentity, "merge", "--no-ff", "-m",
